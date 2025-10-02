@@ -1,0 +1,24 @@
+$* declaracion de variables *$
+DECVAR
+	a1 : FLOAT
+	b2 : INT
+	p : INT
+ENDDECVAR
+
+$* seccion de programa *$
+PROGRAM.SECTION
+	IF (b2 == p) 
+		THEN (p = 5)
+	ENDIF
+	
+	$*comentario*$
+	
+	SHOW "hola mundo"
+	SHOW 99.99
+	SHOW var
+	
+	IF (ALLEQUAL([a+w,b],[(d-3)*2,e],[g,h])) 
+		THEN show " AllEqual es verdadero" 
+	ENDIF  	
+ENDPROGRAM.SECTION
+   
