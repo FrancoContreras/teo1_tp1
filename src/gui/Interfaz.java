@@ -43,22 +43,15 @@ public class Interfaz extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btnAnalizar = new javax.swing.JButton();
         jScrollPane3 = new javax.swing.JScrollPane();
         areaEntrada = new javax.swing.JTextArea();
         jScrollPane4 = new javax.swing.JScrollPane();
         areaSalida = new javax.swing.JTextArea();
-        btnGuardar = new javax.swing.JToggleButton();
-        btnAbrir = new javax.swing.JToggleButton();
+        btnGuardar = new javax.swing.JButton();
+        btnAbrir = new javax.swing.JButton();
+        btnAnalizar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        btnAnalizar.setText("analizar");
-        btnAnalizar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAnalizarActionPerformed(evt);
-            }
-        });
 
         areaEntrada.setColumns(20);
         areaEntrada.setRows(5);
@@ -68,17 +61,24 @@ public class Interfaz extends javax.swing.JFrame {
         areaSalida.setRows(5);
         jScrollPane4.setViewportView(areaSalida);
 
-        btnGuardar.setText("guardar");
+        btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGuardarActionPerformed(evt);
             }
         });
 
-        btnAbrir.setText("abrir");
+        btnAbrir.setText("Abrir");
         btnAbrir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAbrirActionPerformed(evt);
+            }
+        });
+
+        btnAnalizar.setText("Analizar");
+        btnAnalizar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAnalizarActionPerformed(evt);
             }
         });
 
@@ -90,16 +90,16 @@ public class Interfaz extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 370, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
                         .addComponent(btnAnalizar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnGuardar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnAbrir)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -110,9 +110,9 @@ public class Interfaz extends javax.swing.JFrame {
                     .addComponent(btnAnalizar)
                     .addComponent(btnGuardar)
                     .addComponent(btnAbrir))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGap(14, 14, 14)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 482, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 474, Short.MAX_VALUE)
                     .addComponent(jScrollPane4))
                 .addContainerGap())
         );
@@ -155,6 +155,19 @@ public class Interfaz extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnAnalizarActionPerformed
 
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        // TODO add your handling code here:
+        if (seleccionado.showDialog(this, "Guardar archivo") == JFileChooser.APPROVE_OPTION) {
+            archivo = seleccionado.getSelectedFile();
+            if (archivo.getName().endsWith("txt")) {
+                String contenido = areaEntrada.getText();
+                gestion.guardarArchivo(archivo, contenido);   
+            } else {
+                JOptionPane.showMessageDialog(null, "El archivo se debe guardar en formato .txt");
+            }
+        }
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
     private void btnAbrirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAbrirActionPerformed
         // TODO add your handling code here:
         if (seleccionado.showDialog(this, "Abrir archivo") == JFileChooser.APPROVE_OPTION) {
@@ -169,19 +182,6 @@ public class Interfaz extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_btnAbrirActionPerformed
-
-    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        // TODO add your handling code here:
-        if (seleccionado.showDialog(this, "Guardar archivo") == JFileChooser.APPROVE_OPTION) {
-            archivo = seleccionado.getSelectedFile();
-            if (archivo.getName().endsWith("txt")) {
-                String contenido = areaEntrada.getText();
-                gestion.guardarArchivo(archivo, contenido);   
-            } else {
-                JOptionPane.showMessageDialog(null, "El archivo se debe guardar en formato .txt");
-            }
-        }
-    }//GEN-LAST:event_btnGuardarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -211,9 +211,9 @@ public class Interfaz extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextArea areaEntrada;
     private javax.swing.JTextArea areaSalida;
-    private javax.swing.JToggleButton btnAbrir;
+    private javax.swing.JButton btnAbrir;
     private javax.swing.JButton btnAnalizar;
-    private javax.swing.JToggleButton btnGuardar;
+    private javax.swing.JButton btnGuardar;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
     // End of variables declaration//GEN-END:variables
