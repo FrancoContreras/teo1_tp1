@@ -4,7 +4,7 @@ import java.io.File;
 
 public class Principal {
     public static void main(String[] args) {
-        String ruta = "src/jflex/lexico.flex";
+        String ruta = "src/jflex/lexico2.flex";
         generarLexico(ruta);
     }
 

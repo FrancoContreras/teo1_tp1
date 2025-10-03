@@ -1,0 +1,21 @@
+a1ID--1
+b2ID--1
+pID--1
+b2ID--1
+pID--1
+pID--1
+_5CTE_INT-51
+_"hola mundo"CTE_STR-"hola mundo"12
+_99.99CTE_FLT-99.995
+varID--1
+aID--1
+wID--1
+bID--1
+dID--1
+_3CTE_INT-31
+_2CTE_INT-21
+eID--1
+gID--1
+hID--1
+showID--1
+_"AllEqual es verdadero"CTE_STR-"AllEqual es verdadero"23

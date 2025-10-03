@@ -28,4 +28,11 @@ public class gestionArchivo {
         } catch (Exception e) {}
     }
     
+    public void guardarArchivo(File archivo, StringBuilder contenido) {
+        try {
+            salida = new FileOutputStream(archivo);
+            byte[] bytesTxt = contenido.toString().getBytes();
+            salida.write(bytesTxt);
+        } catch (Exception e) {}
+    }
 }

@@ -1,13 +1,16 @@
 package analizador;
 import analizador.Token;
 import analizador.tokenConstante;
-
+import java.util;
 
 %%
 
 %public
 %class Lexico
 %type Token
+%line
+%column
+
 
 /* alfabetos */
 
@@ -42,55 +45,55 @@ import analizador.tokenConstante;
 <YYINITIAL> {
 
 /* OPERADORES */
-    ":"     {return new Token("OP_DCL", yytext());}
-    "="     {return new Token("OP_ASIG", yytext());}
-    "+"     {return new Token("OP_ADC", yytext());}
-    "-"     {return new Token("OP_SUS", yytext());}
-    "/"     {return new Token("OP_DIV", yytext());}
-    "*"     {return new Token("OP_PTO", yytext());}
+    ":"     {return new Token("OP_DCL", yytext(), yycolumn, yyline);}
+    "="     {return new Token("OP_ASIG", yytext(), yycolumn, yyline);}
+    "+"     {return new Token("OP_ADC", yytext(), yycolumn, yyline);}
+    "-"     {return new Token("OP_SUS", yytext(), yycolumn, yyline);}
+    "/"     {return new Token("OP_DIV", yytext(), yycolumn, yyline);}
+    "*"     {return new Token("OP_PTO", yytext(), yycolumn, yyline);}
 
 /* COMPARADORES */
-    "=="    {return new Token("CMP_IGUAL", yytext());}
-    "!="    {return new Token("CMP_DTO", yytext());}
-    "<="    {return new Token("CMP_MEI", yytext());}
-    ">="    {return new Token("CMP_MAI", yytext());}
-    "||"    {return new Token("CMP_DYN", yytext());}
-    "&&"    {return new Token("CMP_CJN", yytext());}
-    "<"     {return new Token("CMP_MENOR", yytext());}
-    ">"     {return new Token("CMP_MAYOR", yytext());}
+    "=="    {return new Token("CMP_IGUAL", yytext(), yycolumn, yyline);}
+    "!="    {return new Token("CMP_DTO", yytext(), yycolumn, yyline);}
+    "<="    {return new Token("CMP_MEI", yytext(), yycolumn, yyline);}
+    ">="    {return new Token("CMP_MAI", yytext(), yycolumn, yyline);}
+    "||"    {return new Token("CMP_DYN", yytext(), yycolumn, yyline);}
+    "&&"    {return new Token("CMP_CJN", yytext(), yycolumn, yyline);}
+    "<"     {return new Token("CMP_MENOR", yytext(), yycolumn, yyline);}
+    ">"     {return new Token("CMP_MAYOR", yytext(), yycolumn, yyline);}
 
 /* PALABRAS RESERVADAS */
-    "REPEAT"                {return new Token("REPEAT", yytext());}
-    "IF"                    {return new Token("IF", yytext());}
-    "THEN"                  {return new Token("THEN", yytext());}
-    "ENDIF"                 {return new Token("ENDIF", yytext());}
-    "ELSE"                  {return new Token("ELSE", yytext());}
-    "SHOW"                  {return new Token("SHOW", yytext());}
-    "DECVAR"                {return new Token("INICIO_VAR", yytext());}
-    "ENDDECVAR"             {return new Token("FIN_VAR", yytext());}
-    "FLOAT"                 {return new Token("FLT", yytext());}
-    "INT"                   {return new Token("INT", yytext());}
-    "STRING"                {return new Token("STR", yytext());}
-    "PROGRAM.SECTION"       {return new Token("INICIO_PROG", yytext());}
-    "ENDPROGRAM.SECTION"    {return new Token("FIN_PROG", yytext());}
-    "ALLEQUAL"              {return new Token("EQUAL", yytext());}
+    "REPEAT"                {return new Token("REPEAT", yytext(), yycolumn, yyline);}
+    "IF"                    {return new Token("IF", yytext(), yycolumn, yyline);}
+    "THEN"                  {return new Token("THEN", yytext(), yycolumn, yyline);}
+    "ENDIF"                 {return new Token("ENDIF", yytext(), yycolumn, yyline);}
+    "ELSE"                  {return new Token("ELSE", yytext(), yycolumn, yyline);}
+    "SHOW"                  {return new Token("SHOW", yytext(), yycolumn, yyline);}
+    "DECVAR"                {return new Token("INICIO_VAR", yytext(), yycolumn, yyline);}
+    "ENDDECVAR"             {return new Token("FIN_VAR", yytext(), yycolumn, yyline);}
+    "FLOAT"                 {return new Token("FLT_DCL", yytext(), yycolumn, yyline);}
+    "INT"                   {return new Token("INT_DCL", yytext(), yycolumn, yyline);}
+    "STRING"                {return new Token("STR", yytext(), yycolumn, yyline);}
+    "PROGRAM.SECTION"       {return new Token("INICIO_PROG", yytext(), yycolumn, yyline);}
+    "ENDPROGRAM.SECTION"    {return new Token("FIN_PROG", yytext(), yycolumn, yyline);}
+    "ALLEQUAL"              {return new Token("EQUAL", yytext(), yycolumn, yyline);}
 
 /* VARIOS */
-    "("     {return new Token("INICIO_A", yytext());}
-    ")"     {return new Token("FIN_A", yytext());}
-    "["     {return new Token("INICIO_E", yytext());}
-    "]"     {return new Token("FIN_E", yytext());}
-    ","     {return new Token("SEP_A", yytext());}
+    "("     {return new Token("INICIO_A", yytext(), yycolumn, yyline);}
+    ")"     {return new Token("FIN_A", yytext(), yycolumn, yyline);}
+    "["     {return new Token("INICIO_E", yytext(), yycolumn, yyline);}
+    "]"     {return new Token("FIN_E", yytext(), yycolumn, yyline);}
+    ","     {return new Token("SEP_A", yytext(), yycolumn, yyline);}
 
 
-    {STR}   {return new Token("CTE_STR", yytext());}
-    {HEX}   {return new Token("CTE_HEX", yytext());}
-    {FLT}   {return new Token("CTE_FLT", yytext());}
-    {INT}   {return new Token("CTE_INT", yytext());}
-    {ID}    {return new Token("ID", yytext());}
+    {STR}   {return new Token("CTE_STR", yytext(), yycolumn, yyline, "-", yytext(), "_" + yytext());}
+    {HEX}   {return new Token("CTE_HEX", yytext(), yycolumn, yyline);}
+    {FLT}   {return new Token("CTE_FLT", yytext(), yycolumn, yyline, "-", yytext(), "_" + yytext());}
+    {INT}   {return new Token("CTE_INT", yytext(), yycolumn, yyline, "-", yytext(), "_" + yytext());}
+    {ID}    {return new Token("ID", yytext(), yycolumn, yyline, "-", "-", yytext());}
     
     {COMENTARIOS}   {/*Ignorar*/}
     {ESPACIO}+      {/*Ignorar*/}
 }
-[^]     {return new Token("ERROR", yytext());}
+[^]     {return new Token("ERROR", yytext(), yycolumn, yyline);}
 

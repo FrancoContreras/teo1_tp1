@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Reader;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -32,6 +33,7 @@ public class Interfaz extends javax.swing.JFrame {
     public Interfaz() {
         initComponents();
         this.setLocationRelativeTo(null);
+        this.setTitle("Analizador Léxico");
     }
 
     /**
@@ -50,6 +52,9 @@ public class Interfaz extends javax.swing.JFrame {
         btnGuardar = new javax.swing.JButton();
         btnAbrir = new javax.swing.JButton();
         btnAnalizar = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        tablaTL = new javax.swing.JTable();
+        btnLimpiar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -82,6 +87,34 @@ public class Interfaz extends javax.swing.JFrame {
             }
         });
 
+        tablaTL.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Token", "Lexema", "Col", "Linea"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane1.setViewportView(tablaTL);
+
+        btnLimpiar.setText("Limpiar");
+        btnLimpiar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLimpiarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -95,11 +128,14 @@ public class Interfaz extends javax.swing.JFrame {
                         .addComponent(btnGuardar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnAbrir)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btnLimpiar)
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 380, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 442, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.DEFAULT_SIZE, 390, Short.MAX_VALUE)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -109,11 +145,15 @@ public class Interfaz extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnAnalizar)
                     .addComponent(btnGuardar)
-                    .addComponent(btnAbrir))
+                    .addComponent(btnAbrir)
+                    .addComponent(btnLimpiar))
                 .addGap(14, 14, 14)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 474, Short.MAX_VALUE)
-                    .addComponent(jScrollPane4))
+                    .addComponent(jScrollPane3)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
 
@@ -122,8 +162,12 @@ public class Interfaz extends javax.swing.JFrame {
 
     private void btnAnalizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAnalizarActionPerformed
         // TODO add your handling code here:
+        DefaultTableModel tabla = (DefaultTableModel) tablaTL.getModel();
+        tabla.setRowCount(0);
+        areaSalida.setText(null);
         File archivo = new File("archivo.txt");
         PrintWriter escribir;
+        gestionArchivo gestion = new gestionArchivo();
         try {
             escribir = new PrintWriter(archivo);
             escribir.print(areaEntrada.getText());
@@ -135,18 +179,17 @@ public class Interfaz extends javax.swing.JFrame {
         try {
             Reader lector = new BufferedReader(new FileReader("archivo.txt"));
             Lexico lexico = new Lexico(lector);
-            StringBuilder salida = new StringBuilder();
             while (true) {
                 Token token = lexico.yylex();  
                 if (token == null) {
-                    salida.append("FIN");
-                    areaSalida.setText(salida.toString());
                     break;
                 }
-                salida.append(token.getTokenTipo())
-                         .append(" : ")
-                         .append(token.getLexema())
-                         .append(System.lineSeparator());
+
+                areaSalida.append(String.format("%s : %s\n", token.getToken(), token.getLexema()));
+              
+                Object[] filaTabla = new Object[] { token.getToken(), token.getLexema(), token.getLinea(), token.getColumna()};
+                tabla.addRow(filaTabla);
+                
             }
         } catch (FileNotFoundException ex) {
             System.getLogger(Interfaz.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
@@ -183,6 +226,14 @@ public class Interfaz extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_btnAbrirActionPerformed
 
+    private void btnLimpiarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLimpiarActionPerformed
+        // TODO add your handling code here:
+        areaSalida.setText(null);
+        areaEntrada.setText(null);
+        DefaultTableModel tabla = (DefaultTableModel) tablaTL.getModel();
+        tabla.setRowCount(0);
+    }//GEN-LAST:event_btnLimpiarActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -214,7 +265,10 @@ public class Interfaz extends javax.swing.JFrame {
     private javax.swing.JButton btnAbrir;
     private javax.swing.JButton btnAnalizar;
     private javax.swing.JButton btnGuardar;
+    private javax.swing.JButton btnLimpiar;
+    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JTable tablaTL;
     // End of variables declaration//GEN-END:variables
 }
