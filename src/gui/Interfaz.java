@@ -16,6 +16,7 @@ import java.io.PrintWriter;
 import java.io.Reader;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.util.*;
 
 /**
  *
@@ -188,9 +189,9 @@ public class Interfaz extends javax.swing.JFrame {
                 areaSalida.append(String.format("%s : %s\n", token.getToken(), token.getLexema()));
               
                 Object[] filaTabla = new Object[] { token.getToken(), token.getLexema(), token.getLinea(), token.getColumna()};
-                tabla.addRow(filaTabla);
-                
+                tabla.addRow(filaTabla);   
             }
+            gestion.crearTablaSimbolos(lexico.getTs());
         } catch (FileNotFoundException ex) {
             System.getLogger(Interfaz.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
         } catch (IOException ex) {

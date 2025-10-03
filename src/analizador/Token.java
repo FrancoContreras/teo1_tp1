@@ -1,11 +1,13 @@
 package analizador;
 
+import java.util.Objects;
+
 public class Token {
     private String token;
     private String lexema;
     private int columna;
     private int linea;
-    private String tipo;
+    private String tipo = "-";
     private String valor;
     private String nombre;
     private boolean ts;
@@ -44,6 +46,17 @@ public class Token {
     public String getNombre() { return nombre; }
     
     public boolean getTs() { return ts;}
+    
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if(o == null || getClass() != o.getClass()) return false;
+        Token token = (Token)o;
+        return Objects.equals(valor, token.valor);    
+    }
+    
+    public int hashCode() {
+        return Objects.hash(valor);
+    }
 
     @Override
     public String toString() {

@@ -4,7 +4,7 @@
 
 package analizador;
 import analizador.Token;
-import java.util.ArrayList;
+import java.util.*;
 
 
 
@@ -386,6 +386,10 @@ public class Lexico {
 
     ArrayList<Token> tokens = new ArrayList<Token>();
     public ArrayList<Token> getTokens() { return tokens; }
+    
+    Set<Token> ts = new HashSet<Token>();
+    
+    public Set<Token> getTs() { return ts; }
 /*
     public boolean validarStr(Token) {
         if (Token.getValor().length() <= 30) return true; 
@@ -821,192 +825,278 @@ public class Lexico {
           // fall through
           case 42: break;
           case 3:
-            { tokens.add(new Token("INICIO_A", yytext(), yycolumn, yyline));
+            { Token token = new Token("INICIO_A", yytext(), yycolumn, yyline); 
+                tokens.add(token);
+                return token;
             }
           // fall through
           case 43: break;
           case 4:
-            { tokens.add(new Token("FIN_A", yytext(), yycolumn, yyline));
+            { Token token = new Token("FIN_A", yytext(), yycolumn, yyline);
+                tokens.add(token);
+                return token;
             }
           // fall through
           case 44: break;
           case 5:
-            { tokens.add(new Token("OP_PTO", yytext(), yycolumn, yyline));
+            { Token token = new Token("OP_PTO", yytext(), yycolumn, yyline);
+                tokens.add(token);
+                return token;
             }
           // fall through
           case 45: break;
           case 6:
-            { tokens.add(new Token("OP_ADC", yytext(), yycolumn, yyline));
+            { Token token = new Token("OP_ADC", yytext(), yycolumn, yyline);
+                tokens.add(token);
+                return token;
             }
           // fall through
           case 46: break;
           case 7:
-            { tokens.add(new Token("SEP_A", yytext(), yycolumn, yyline));
+            { Token token = new Token("SEP_A", yytext(), yycolumn, yyline); 
+                tokens.add(token);
+                return token;
             }
           // fall through
           case 47: break;
           case 8:
-            { tokens.add(new Token("OP_SUS", yytext(), yycolumn, yyline));
+            { Token token = new Token("OP_SUS", yytext(), yycolumn, yyline);
+                tokens.add(token);
+                return token;
             }
           // fall through
           case 48: break;
           case 9:
-            { tokens.add(new Token("OP_DIV", yytext(), yycolumn, yyline));
+            { Token token = new Token("OP_DIV", yytext(), yycolumn, yyline);
+                tokens.add(token);
+                return token;
             }
           // fall through
           case 49: break;
           case 10:
-            { tokens.add(new Token("CTE_INT", yytext(), yycolumn, yyline, "-", yytext(), "_" + yytext()));
+            { Token token = new Token("CTE_INT", yytext(), yycolumn, yyline, "-", yytext(), "_" + yytext());
+                tokens.add(token);
+                ts.add(token);
+                
+                return token;
             }
           // fall through
           case 50: break;
           case 11:
-            { tokens.add(new Token("OP_DCL", yytext(), yycolumn, yyline));
+            { Token token = new Token("OP_DCL", yytext(), yycolumn, yyline); 
+                tokens.add(token);
+                return token;
             }
           // fall through
           case 51: break;
           case 12:
-            { tokens.add(new Token("CMP_MENOR", yytext(), yycolumn, yyline));
+            { Token token = new Token("CMP_MENOR", yytext(), yycolumn, yyline);
+                tokens.add(token);
+                return token;
             }
           // fall through
           case 52: break;
           case 13:
-            { tokens.add(new Token("OP_ASIG", yytext(), yycolumn, yyline));
+            { Token token = new Token("OP_ASIG", yytext(), yycolumn, yyline); 
+                tokens.add(token);
+                return token;
             }
           // fall through
           case 53: break;
           case 14:
-            { tokens.add(new Token("CMP_MAYOR", yytext(), yycolumn, yyline));
+            { Token token = new Token("CMP_MAYOR", yytext(), yycolumn, yyline);
+                tokens.add(token);
+                return token;
             }
           // fall through
           case 54: break;
           case 15:
-            { tokens.add(new Token("ID", yytext(), yycolumn, yyline, "-", "-", yytext()));
+            { Token token = new Token("ID", yytext(), yycolumn, yyline, "-", "-", yytext());
+                tokens.add(token);
+                ts.add(token);
+                
+                return token;
             }
           // fall through
           case 55: break;
           case 16:
-            { tokens.add(new Token("INICIO_E", yytext(), yycolumn, yyline));
+            { Token token = new Token("INICIO_E", yytext(), yycolumn, yyline);
+                tokens.add(token);
+                return token;
             }
           // fall through
           case 56: break;
           case 17:
-            { tokens.add(new Token("FIN_E", yytext(), yycolumn, yyline));
+            { Token token = new Token("FIN_E", yytext(), yycolumn, yyline); 
+                tokens.add(token);
+                return token;
             }
           // fall through
           case 57: break;
           case 18:
-            { tokens.add(new Token("CMP_DTO", yytext(), yycolumn, yyline));
+            { Token token = new Token("CMP_DTO", yytext(), yycolumn, yyline); 
+                tokens.add(token);
+                return token;
             }
           // fall through
           case 58: break;
           case 19:
-            { tokens.add(new Token("CTE_STR", yytext(), yycolumn, yyline, "-", yytext(), "_" + yytext()));
+            { Token token = new Token("CTE_STR", yytext(), yycolumn, yyline, "-", yytext(), "_" + yytext());
+                tokens.add(token);
+                ts.add(token);
+
+                return token;
             }
           // fall through
           case 59: break;
           case 20:
-            { tokens.add(new Token("CMP_CJN", yytext(), yycolumn, yyline));
+            { Token token = new Token("CMP_CJN", yytext(), yycolumn, yyline); 
+                tokens.add(token);
+                return token;
             }
           // fall through
           case 60: break;
           case 21:
-            { tokens.add(new Token("CMP_MEI", yytext(), yycolumn, yyline));
+            { Token token = new Token("CMP_MEI", yytext(), yycolumn, yyline);
+                tokens.add(token);
+                return token;
             }
           // fall through
           case 61: break;
           case 22:
-            { tokens.add(new Token("CMP_IGUAL", yytext(), yycolumn, yyline));
+            { Token token = new Token("CMP_IGUAL", yytext(), yycolumn, yyline);
+                tokens.add(token);
+                return token;
             }
           // fall through
           case 62: break;
           case 23:
-            { tokens.add(new Token("CMP_MAI", yytext(), yycolumn, yyline));
+            { Token token = new Token("CMP_MAI", yytext(), yycolumn, yyline);
+                tokens.add(token);
+                return token;
             }
           // fall through
           case 63: break;
           case 24:
-            { tokens.add(new Token("IF", yytext(), yycolumn, yyline));
+            { Token token = new Token("IF", yytext(), yycolumn, yyline); 
+                                tokens.add(token);
+                                return token;
             }
           // fall through
           case 64: break;
           case 25:
-            { tokens.add(new Token("CMP_DYN", yytext(), yycolumn, yyline));
+            { Token token = new Token("CMP_DYN", yytext(), yycolumn, yyline); 
+                tokens.add(token);
+                return token;
             }
           // fall through
           case 65: break;
           case 26:
-            { tokens.add(new Token("CTE_FLT", yytext(), yycolumn, yyline, "-", yytext(), "_" + yytext()));
+            { Token token = new Token("CTE_FLT", yytext(), yycolumn, yyline, "-", yytext(), "_" + yytext());
+                tokens.add(token);
+                ts.add(token);
+                
+                return token;
             }
           // fall through
           case 66: break;
           case 27:
-            { tokens.add(new Token("CTE_HEX", yytext(), yycolumn, yyline));
+            { Token token = new Token("CTE_HEX", yytext(), yycolumn, yyline);
+                tokens.add(token);
+                ts.add(token);
+
+                return token;
             }
           // fall through
           case 67: break;
           case 28:
-            { tokens.add(new Token("INT_DCL", yytext(), yycolumn, yyline));
+            { Token token = new Token("INT_DCL", yytext(), yycolumn, yyline); 
+                                tokens.add(token);
+                                return token;
             }
           // fall through
           case 68: break;
           case 29:
-            { tokens.add(new Token("ELSE", yytext(), yycolumn, yyline));
+            { Token token = new Token("ELSE", yytext(), yycolumn, yyline);
+                                tokens.add(token);
+                                return token;
             }
           // fall through
           case 69: break;
           case 30:
-            { tokens.add(new Token("SHOW", yytext(), yycolumn, yyline));
+            { Token token = new Token("SHOW", yytext(), yycolumn, yyline); 
+                                tokens.add(token);
+                                return token;
             }
           // fall through
           case 70: break;
           case 31:
-            { tokens.add(new Token("THEN", yytext(), yycolumn, yyline));
+            { Token token = new Token("THEN", yytext(), yycolumn, yyline); 
+                                tokens.add(token);
+                                return token;
             }
           // fall through
           case 71: break;
           case 32:
-            { tokens.add(new Token("ENDIF", yytext(), yycolumn, yyline));
+            { Token token = new Token("ENDIF", yytext(), yycolumn, yyline); 
+                                tokens.add(token);
+                                return token;
             }
           // fall through
           case 72: break;
           case 33:
-            { tokens.add(new Token("FLT_DCL", yytext(), yycolumn, yyline));
+            { Token token = new Token("FLT_DCL", yytext(), yycolumn, yyline); 
+                                tokens.add(token);
+                                return token;
             }
           // fall through
           case 73: break;
           case 34:
-            { tokens.add(new Token("INICIO_VAR", yytext(), yycolumn, yyline));
+            { Token token = new Token("INICIO_VAR", yytext(), yycolumn, yyline); 
+                                tokens.add(token);
+                                return token;
             }
           // fall through
           case 74: break;
           case 35:
-            { tokens.add(new Token("REPEAT", yytext(), yycolumn, yyline));
+            { Token token = new Token("REPEAT", yytext(), yycolumn, yyline); 
+                                tokens.add(token);
+                                return token;
             }
           // fall through
           case 75: break;
           case 36:
-            { tokens.add(new Token("STR", yytext(), yycolumn, yyline));
+            { Token token = new Token("STR", yytext(), yycolumn, yyline);
+                                tokens.add(token);
+                                return token;
             }
           // fall through
           case 76: break;
           case 37:
-            { tokens.add(new Token("EQUAL", yytext(), yycolumn, yyline));
+            { Token token = new Token("EQUAL", yytext(), yycolumn, yyline);
+                                tokens.add(token);
+                                return token;
             }
           // fall through
           case 77: break;
           case 38:
-            { tokens.add(new Token("FIN_VAR", yytext(), yycolumn, yyline));
+            { Token token = new Token("FIN_VAR", yytext(), yycolumn, yyline); 
+                                tokens.add(token);
+                                return token;
             }
           // fall through
           case 78: break;
           case 39:
-            { tokens.add(new Token("INICIO_PROG", yytext(), yycolumn, yyline));
+            { Token token = new Token("INICIO_PROG", yytext(), yycolumn, yyline); 
+                                tokens.add(token);
+                                return token;
             }
           // fall through
           case 79: break;
           case 40:
-            { tokens.add(new Token("FIN_PROG", yytext(), yycolumn, yyline));
+            { Token token = new Token("FIN_PROG", yytext(), yycolumn, yyline);
+                                tokens.add(token);
+                                return token;
             }
           // fall through
           case 80: break;

@@ -1,6 +1,7 @@
 
 package analizador;
 import java.io.*;
+import java.util.*;
 
 public class gestionArchivo {
     FileInputStream entrada;
@@ -28,11 +29,22 @@ public class gestionArchivo {
         } catch (Exception e) {}
     }
     
-    public void guardarArchivo(File archivo, StringBuilder contenido) {
+public void crearTablaSimbolos(Set<Token> HashSetDetokens){
         try {
-            salida = new FileOutputStream(archivo);
-            byte[] bytesTxt = contenido.toString().getBytes();
-            salida.write(bytesTxt);
-        } catch (Exception e) {}
+            FileWriter archivo = new FileWriter("TablaSimbolos.txt");
+            archivo.write("NOMBRE\tTOKEN\tTIPO\tVALOR\tLONGITUD\n");
+            for (Token token : HashSetDetokens) {
+                if(token.getTs() == true){
+                    archivo.write("  " + token.getNombre() + "\t" + token.getToken() + "\t"
+                            + token.getValor() + "\t" + token.getValor().length());
+                    archivo.write("\n");
+                }
+            }
+            archivo.close();
+
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
     }
+    
 }
