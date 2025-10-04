@@ -55,10 +55,10 @@ public class gestionArchivo {
     
     public void crearTablaSimbolos(Set<Token> HashSetDetokens){
         try {
-            FileWriter archivo = new FileWriter("TablaSimbolos.txt");
+            FileWriter archivo = new FileWriter("ts.txt");
             archivo.write(String.format("%-32s %-15s %-15s %-32s %-15s\n", "NOMBRE", "TOKEN", "TIPO", "VALOR", "LONGITUD"));
             for (Token token : HashSetDetokens) {
-                if(!token.getToken().equals("CTE_STR")){
+                if(token.getToken().equals("CTE_STR")){
                     archivo.write(String.format("%-32s %-15s %-15s %-32s %-15s", token.getNombre(), token.getToken(), token.getTipo(), token.getValor(), token.getValor().length()));
                 }
                 else if (token.getToken().equals("CTE_HEX") || token.getToken().equals("CTE_INT") || token.getToken().equals("CTE_FLT")){

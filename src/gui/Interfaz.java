@@ -36,6 +36,10 @@ public class Interfaz extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         this.setTitle("Analizador Léxico");
     }
+    
+    public void salidaError(String error) {
+        areaSalida.append(error);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -181,15 +185,21 @@ public class Interfaz extends javax.swing.JFrame {
             Reader lector = new BufferedReader(new FileReader("archivo.txt"));
             Lexico lexico = new Lexico(lector);
             while (true) {
-                Token token = lexico.yylex();  
-                if (token == null) {
-                    break;
+                Object o = lexico.yylex();
+                if (o instanceof String) {
+                    areaSalida.append((String)o);
                 }
+                else {
+                    Token token = (Token)o;  
+                    if (token == null) {
+                        break;
+                    }
 
-                areaSalida.append(String.format("%s : %s\n", token.getToken(), token.getLexema()));
-              
-                Object[] filaTabla = new Object[] { token.getToken(), token.getLexema(), token.getColumna(), token.getLinea()};
-                tabla.addRow(filaTabla);   
+                    //areaSalida.append(String.format("%s : %s\n", token.getToken(), token.getLexema()));
+
+                    Object[] filaTabla = new Object[] { token.getToken(), token.getLexema(), token.getColumna(), token.getLinea()};
+                    tabla.addRow(filaTabla);
+                }
             }
             gestion.crearTablaSimbolos(lexico.getTs());
         } catch (FileNotFoundException ex) {

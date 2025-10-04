@@ -1,18 +1,45 @@
 package analizador;
 import analizador.Token;
-import analizador.tokenConstante;
-import java.util;
+import java.util.*;
+import gui.Interfaz;
+
+
 
 %%
 
 %public
 %class Lexico
-%type Token
+%type Object
 %line
 %column
 
+%{
 
-/* alfabetos */
+    ArrayList<Token> tokens = new ArrayList<Token>();
+    public ArrayList<Token> getTokens() { return tokens; }
+    
+    Set<Token> ts = new HashSet<Token>();
+    public Set<Token> getTs() { return ts; }
+
+    public boolean validarStr(String valor) {
+        if (valor.length() <= 30) return true; 
+        else return false;
+    }
+
+    public boolean validarInt(int valor) {
+        //32768
+        if (valor <= 32768) return true;
+        else return false;
+    }
+
+    public boolean validarStr(float valor) {
+        if (valor < Float.MAX_VALUE) return true;
+        else return false;
+    }
+
+%}
+
+/* ALFABETOS */
 
     ALFABETICO = [a-zA-Z]
     DIGITO = [0-9]
@@ -22,7 +49,7 @@ import java.util;
     ARITMETICO = [-+*/]
     LOGICO = [<>=!]
 
-/* constantes */
+/* CONSTANTES */
 
     INT = {DIGITO}+
     FLT = {DIGITO}+("."){DIGITO}+
@@ -34,66 +61,267 @@ import java.util;
     ID = {ALFABETICO}({DIGITO}|{ALFABETICO})*   
     COMENTARIOS = ("$*")({ALFANUM}|{ESPACIO}|{ESPECIAL})*("*$")
 
-/*
-%eofval{
-    return new Token(TokenConstant.EOF, null);
-%eofval}
-*/
 
 %%
 
 <YYINITIAL> {
 
 /* OPERADORES */
-    ":"     {return new Token("OP_DCL", yytext(), yycolumn, yyline);}
-    "="     {return new Token("OP_ASIG", yytext(), yycolumn, yyline);}
-    "+"     {return new Token("OP_ADC", yytext(), yycolumn, yyline);}
-    "-"     {return new Token("OP_SUS", yytext(), yycolumn, yyline);}
-    "/"     {return new Token("OP_DIV", yytext(), yycolumn, yyline);}
-    "*"     {return new Token("OP_PTO", yytext(), yycolumn, yyline);}
+    ":"     {
+                Token token = new Token("OP_DCL", yytext(), yycolumn, yyline); 
+                tokens.add(token);
+                return token;
+            }
+    "="     {
+                Token token = new Token("OP_ASIG", yytext(), yycolumn, yyline); 
+                tokens.add(token);
+                return token;
+            }
+    "+"     {
+                Token token = new Token("OP_ADC", yytext(), yycolumn, yyline);
+                tokens.add(token);
+                return token;
+            }
+    "-"     {
+                Token token = new Token("OP_SUS", yytext(), yycolumn, yyline);
+                tokens.add(token);
+                return token;
+            }
+    "/"     {
+                Token token = new Token("OP_DIV", yytext(), yycolumn, yyline);
+                tokens.add(token);
+                return token;
+            }
+    "*"     {
+                Token token = new Token("OP_PTO", yytext(), yycolumn, yyline);
+                tokens.add(token);
+                return token;
+            }
 
 /* COMPARADORES */
-    "=="    {return new Token("CMP_IGUAL", yytext(), yycolumn, yyline);}
-    "!="    {return new Token("CMP_DTO", yytext(), yycolumn, yyline);}
-    "<="    {return new Token("CMP_MEI", yytext(), yycolumn, yyline);}
-    ">="    {return new Token("CMP_MAI", yytext(), yycolumn, yyline);}
-    "||"    {return new Token("CMP_DYN", yytext(), yycolumn, yyline);}
-    "&&"    {return new Token("CMP_CJN", yytext(), yycolumn, yyline);}
-    "<"     {return new Token("CMP_MENOR", yytext(), yycolumn, yyline);}
-    ">"     {return new Token("CMP_MAYOR", yytext(), yycolumn, yyline);}
+    "=="    {
+                Token token = new Token("CMP_IGUAL", yytext(), yycolumn, yyline);
+                tokens.add(token);
+                return token;
+            }
+    "!="    {
+                Token token = new Token("CMP_DTO", yytext(), yycolumn, yyline); 
+                tokens.add(token);
+                return token;
+            }
+    "<="    {
+                Token token = new Token("CMP_MEI", yytext(), yycolumn, yyline);
+                tokens.add(token);
+                return token;
+            }
+    ">="    {
+                Token token = new Token("CMP_MAI", yytext(), yycolumn, yyline);
+                tokens.add(token);
+                return token;
+            }
+    "||"    {
+                Token token = new Token("CMP_DYN", yytext(), yycolumn, yyline); 
+                tokens.add(token);
+                return token;
+            }
+    "&&"    {
+                Token token = new Token("CMP_CJN", yytext(), yycolumn, yyline); 
+                tokens.add(token);
+                return token;
+            }
+    "<"     {
+                Token token = new Token("CMP_MENOR", yytext(), yycolumn, yyline);
+                tokens.add(token);
+                return token;
+            }
+    ">"     {
+                Token token = new Token("CMP_MAYOR", yytext(), yycolumn, yyline);
+                tokens.add(token);
+                return token;
+            }
 
 /* PALABRAS RESERVADAS */
-    "REPEAT"                {return new Token("REPEAT", yytext(), yycolumn, yyline);}
-    "IF"                    {return new Token("IF", yytext(), yycolumn, yyline);}
-    "THEN"                  {return new Token("THEN", yytext(), yycolumn, yyline);}
-    "ENDIF"                 {return new Token("ENDIF", yytext(), yycolumn, yyline);}
-    "ELSE"                  {return new Token("ELSE", yytext(), yycolumn, yyline);}
-    "SHOW"                  {return new Token("SHOW", yytext(), yycolumn, yyline);}
-    "DECVAR"                {return new Token("INICIO_VAR", yytext(), yycolumn, yyline);}
-    "ENDDECVAR"             {return new Token("FIN_VAR", yytext(), yycolumn, yyline);}
-    "FLOAT"                 {return new Token("FLT_DCL", yytext(), yycolumn, yyline);}
-    "INT"                   {return new Token("INT_DCL", yytext(), yycolumn, yyline);}
-    "STRING"                {return new Token("STR", yytext(), yycolumn, yyline);}
-    "PROGRAM.SECTION"       {return new Token("INICIO_PROG", yytext(), yycolumn, yyline);}
-    "ENDPROGRAM.SECTION"    {return new Token("FIN_PROG", yytext(), yycolumn, yyline);}
-    "ALLEQUAL"              {return new Token("EQUAL", yytext(), yycolumn, yyline);}
+    "REPEAT"                {
+                                Token token = new Token("REPEAT", yytext(), yycolumn, yyline); 
+                                tokens.add(token);
+                                return token;
+                            }
+    "IF"                    {
+                                Token token = new Token("IF", yytext(), yycolumn, yyline); 
+                                tokens.add(token);
+                                return token;
+                            }
+    "THEN"                  {
+                                Token token = new Token("THEN", yytext(), yycolumn, yyline); 
+                                tokens.add(token);
+                                return token;
+                            }
+    "ENDIF"                 {
+                                Token token = new Token("ENDIF", yytext(), yycolumn, yyline); 
+                                tokens.add(token);
+                                return token;
+                            }
+    "ELSE"                  {
+                                Token token = new Token("ELSE", yytext(), yycolumn, yyline);
+                                tokens.add(token);
+                                return token;
+                            }
+    "SHOW"                  {
+                                Token token = new Token("SHOW", yytext(), yycolumn, yyline); 
+                                tokens.add(token);
+                                return token;
+                            }
+    "DECVAR"                {
+                                Token token = new Token("INICIO_VAR", yytext(), yycolumn, yyline); 
+                                tokens.add(token);
+                                return token;
+                            }
+    "ENDDECVAR"             {
+                                Token token = new Token("FIN_VAR", yytext(), yycolumn, yyline); 
+                                tokens.add(token);
+                                return token;
+                            }
+    "FLOAT"                 {
+                                Token token = new Token("FLT_DCL", yytext(), yycolumn, yyline); 
+                                tokens.add(token);
+                                return token;
+                            }
+    "INT"                   {
+                                Token token = new Token("INT_DCL", yytext(), yycolumn, yyline); 
+                                tokens.add(token);
+                                return token;
+                            }
+    "STRING"                {
+                                Token token = new Token("STR", yytext(), yycolumn, yyline);
+                                tokens.add(token);
+                                return token;
+                            }
+    "PROGRAM.SECTION"       {
+                                Token token = new Token("INICIO_PROG", yytext(), yycolumn, yyline); 
+                                tokens.add(token);
+                                return token;
+                            }
+    "ENDPROGRAM.SECTION"    {
+                                Token token = new Token("FIN_PROG", yytext(), yycolumn, yyline);
+                                tokens.add(token);
+                                return token;
+                            }
+    "ALLEQUAL"              {
+                                Token token = new Token("EQUAL", yytext(), yycolumn, yyline);
+                                tokens.add(token);
+                                return token;
+                            }
 
 /* VARIOS */
-    "("     {return new Token("INICIO_A", yytext(), yycolumn, yyline);}
-    ")"     {return new Token("FIN_A", yytext(), yycolumn, yyline);}
-    "["     {return new Token("INICIO_E", yytext(), yycolumn, yyline);}
-    "]"     {return new Token("FIN_E", yytext(), yycolumn, yyline);}
-    ","     {return new Token("SEP_A", yytext(), yycolumn, yyline);}
+    "("     {
+                Token token = new Token("INICIO_A", yytext(), yycolumn, yyline); 
+                tokens.add(token);
+                return token;
+            }
+    ")"     {
+                Token token = new Token("FIN_A", yytext(), yycolumn, yyline);
+                tokens.add(token);
+                return token; 
+            }
+    "["     {
+                Token token = new Token("INICIO_E", yytext(), yycolumn, yyline);
+                tokens.add(token);
+                return token;
+            }
+    "]"     {
+                Token token = new Token("FIN_E", yytext(), yycolumn, yyline); 
+                tokens.add(token);
+                return token;
+            }
+    ","     {
+                Token token = new Token("SEP_A", yytext(), yycolumn, yyline); 
+                tokens.add(token);
+                return token;
+            }
 
 
-    {STR}   {return new Token("CTE_STR", yytext(), yycolumn, yyline, "-", yytext(), "_" + yytext());}
-    {HEX}   {return new Token("CTE_HEX", yytext(), yycolumn, yyline);}
-    {FLT}   {return new Token("CTE_FLT", yytext(), yycolumn, yyline, "-", yytext(), "_" + yytext());}
-    {INT}   {return new Token("CTE_INT", yytext(), yycolumn, yyline, "-", yytext(), "_" + yytext());}
-    {ID}    {return new Token("ID", yytext(), yycolumn, yyline, "-", "-", yytext());}
+/* CONSTANTES */
+    {STR}   {   
+                String valor = yytext().substring(1, yytext().length()-1);
+                if (!validarStr(valor)) {
+                    String error = "ERROR : CTE_STR Fuera de rango\n";
+                    return error;
+                }
+                else {
+                    Token token = new Token("CTE_STR", yytext(), yycolumn, yyline, "-", valor, "_" + valor);
+                    tokens.add(token);
+                    ts.add(token);
+
+                    return token;
+                }
+                
+            }
+    {HEX}   {   
+                try {
+                    int valorInt = Integer.parseInt(yytext().substring(2), 16);
+                    String valorStr = String.valueOf(valorInt);
+
+                    Token token = new Token("CTE_HEX", yytext(), yycolumn, yyline, "-", valorStr, yytext());
+                    tokens.add(token);
+                    ts.add(token);
+
+                    return token;
+                    
+                } catch (NumberFormatException nfe) {
+                    String error = "ERROR : CTE_HEX Fuera de rango\n";
+                    return error;
+                }
+            }
+    {FLT}   {   
+                try {
+                    float valor = Float.parseFloat(yytext());
+                    if (!validarStr(valor)) {
+                        String error = "ERROR : CTE_FLT Fuera de rango\n";
+                        return error;   
+                    }
+                    else {
+                        Token token = new Token("CTE_FLT", yytext(), yycolumn, yyline, "-", yytext(), "_" + yytext());
+                        tokens.add(token);
+                        ts.add(token);
+                        return token;
+                    }
+                } catch (NumberFormatException nfe) {
+                    String error = "ERROR : CTE_FLT Fuera de rango\n";
+                    return error;
+                }
+            }
+    {INT}   {   
+                try {
+                    int valor = Integer.parseInt(yytext());
+                    if (!validarInt(valor)) {
+                        String error = "ERROR : CTE_INT Fuera de rango\n";
+                        return error;
+                    }
+                    else {
+                        Token token = new Token("CTE_INT", yytext(), yycolumn, yyline, "-", yytext(), "_" + yytext());
+                        tokens.add(token);
+                        ts.add(token);
+
+                        return token;
+                    }
+                } catch(NumberFormatException nfe) {
+                    String error = "ERROR : CTE_INT Fuera de rango\n";
+                    return error;    
+                }
+            }
+    {ID}    {   
+                Token token = new Token("ID", yytext(), yycolumn, yyline, "-", "-", yytext());
+                tokens.add(token);
+                ts.add(token);
+                
+                return token;
+            }
     
     {COMENTARIOS}   {/*Ignorar*/}
     {ESPACIO}+      {/*Ignorar*/}
 }
-[^]     {return new Token("ERROR", yytext(), yycolumn, yyline);}
+
+[^]     {
+            return new Token("ERROR", yytext(), yycolumn, yyline);
+        }
 

@@ -5,7 +5,7 @@
 package analizador;
 import analizador.Token;
 import java.util.*;
-
+import gui.Interfaz;
 
 
 
@@ -390,14 +390,19 @@ public class Lexico {
     Set<Token> ts = new HashSet<Token>();
     public Set<Token> getTs() { return ts; }
 
-    public boolean validarStr(Token token) {
-        if (token.getValor().length() <= 30) return true; 
+    public boolean validarStr(String valor) {
+        if (valor.length() <= 30) return true; 
         else return false;
     }
 
-    public boolean validarInt(Token token) {
+    public boolean validarInt(int valor) {
         //32768
-        if (Integer.parseInt(token.getValor()) <= 32768) return true;
+        if (valor <= 32768) return true;
+        else return false;
+    }
+
+    public boolean validarStr(float valor) {
+        if (valor < Float.MAX_VALUE) return true;
         else return false;
     }
 
@@ -672,7 +677,7 @@ public class Lexico {
    * @return the next token.
    * @exception java.io.IOException if any I/O-Error occurs.
    */
-  public Token yylex() throws java.io.IOException
+  public Object yylex() throws java.io.IOException
   {
     int zzInput;
     int zzAction;
@@ -814,7 +819,7 @@ public class Lexico {
       else {
         switch (zzAction < 0 ? zzAction : ZZ_ACTION[zzAction]) {
           case 1:
-            { tokens.add(new Token("ERROR", yytext(), yycolumn, yyline));
+            { return new Token("ERROR", yytext(), yycolumn, yyline);
             }
           // fall through
           case 41: break;
@@ -873,11 +878,23 @@ public class Lexico {
           // fall through
           case 49: break;
           case 10:
-            { Token token = new Token("CTE_INT", yytext(), yycolumn, yyline, "-", yytext(), "_" + yytext());
-                tokens.add(token);
-                ts.add(token);
-                
-                return token;
+            { try {
+                    int valor = Integer.parseInt(yytext());
+                    if (!validarInt(valor)) {
+                        String error = "ERROR : CTE_INT Fuera de rango\n";
+                        return error;
+                    }
+                    else {
+                        Token token = new Token("CTE_INT", yytext(), yycolumn, yyline, "-", yytext(), "_" + yytext());
+                        tokens.add(token);
+                        ts.add(token);
+
+                        return token;
+                    }
+                } catch(NumberFormatException nfe) {
+                    String error = "ERROR : CTE_INT Fuera de rango\n";
+                    return error;    
+                }
             }
           // fall through
           case 50: break;
@@ -940,11 +957,18 @@ public class Lexico {
           // fall through
           case 58: break;
           case 19:
-            { Token token = new Token("CTE_STR", yytext(), yycolumn, yyline, "-", yytext().substring(1, yytext().length()-1), "_" + yytext().substring(1, yytext().length()-1));
-                tokens.add(token);
-                ts.add(token);
+            { String valor = yytext().substring(1, yytext().length()-1);
+                if (!validarStr(valor)) {
+                    String error = "ERROR : CTE_STR Fuera de rango\n";
+                    return error;
+                }
+                else {
+                    Token token = new Token("CTE_STR", yytext(), yycolumn, yyline, "-", valor, "_" + valor);
+                    tokens.add(token);
+                    ts.add(token);
 
-                return token;
+                    return token;
+                }
             }
           // fall through
           case 59: break;
@@ -991,20 +1015,40 @@ public class Lexico {
           // fall through
           case 65: break;
           case 26:
-            { Token token = new Token("CTE_FLT", yytext(), yycolumn, yyline, "-", yytext(), "_" + yytext());
-                tokens.add(token);
-                ts.add(token);
-                
-                return token;
+            { try {
+                    float valor = Float.parseFloat(yytext());
+                    if (!validarStr(valor)) {
+                        String error = "ERROR : CTE_FLT Fuera de rango\n";
+                        return error;   
+                    }
+                    else {
+                        Token token = new Token("CTE_FLT", yytext(), yycolumn, yyline, "-", yytext(), "_" + yytext());
+                        tokens.add(token);
+                        ts.add(token);
+                        return token;
+                    }
+                } catch (NumberFormatException nfe) {
+                    String error = "ERROR : CTE_FLT Fuera de rango\n";
+                    return error;
+                }
             }
           // fall through
           case 66: break;
           case 27:
-            { Token token = new Token("CTE_HEX", yytext(), yycolumn, yyline, "-", String.valueOf(Integer.parseInt(yytext().substring(2), 16)), yytext());
-                tokens.add(token);
-                ts.add(token);
+            { try {
+                    int valorInt = Integer.parseInt(yytext().substring(2), 16);
+                    String valorStr = String.valueOf(valorInt);
 
-                return token;
+                    Token token = new Token("CTE_HEX", yytext(), yycolumn, yyline, "-", valorStr, yytext());
+                    tokens.add(token);
+                    ts.add(token);
+
+                    return token;
+                    
+                } catch (NumberFormatException nfe) {
+                    String error = "ERROR : CTE_HEX Fuera de rango\n";
+                    return error;
+                }
             }
           // fall through
           case 67: break;
