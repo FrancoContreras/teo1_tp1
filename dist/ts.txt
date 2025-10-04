@@ -1,0 +1,6 @@
+NOMBRE                           TOKEN           TIPO            VALOR                            LONGITUD       
+_2                               CTE_INT         -               2                                -              
+_3                               CTE_INT         -               3                                -              
+_5                               CTE_INT         -               5                                -              
+_AllEqual es verdadero           CTE_STR         -               AllEqual es verdadero            21             
+a1                               ID              -               -                                -              
