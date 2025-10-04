@@ -388,20 +388,19 @@ public class Lexico {
     public ArrayList<Token> getTokens() { return tokens; }
     
     Set<Token> ts = new HashSet<Token>();
-    
     public Set<Token> getTs() { return ts; }
-/*
-    public boolean validarStr(Token) {
-        if (Token.getValor().length() <= 30) return true; 
+
+    public boolean validarStr(Token token) {
+        if (token.getValor().length() <= 30) return true; 
         else return false;
     }
 
-    public boolean validarInt(Token) {
+    public boolean validarInt(Token token) {
         //32768
-        if (Token.getValor() <= 32768) return true;
+        if (Integer.parseInt(token.getValor()) <= 32768) return true;
         else return false;
     }
-*/
+
 
 
   /**
@@ -941,7 +940,7 @@ public class Lexico {
           // fall through
           case 58: break;
           case 19:
-            { Token token = new Token("CTE_STR", yytext(), yycolumn, yyline, "-", yytext(), "_" + yytext());
+            { Token token = new Token("CTE_STR", yytext(), yycolumn, yyline, "-", yytext().substring(1, yytext().length()-1), "_" + yytext().substring(1, yytext().length()-1));
                 tokens.add(token);
                 ts.add(token);
 
@@ -1001,7 +1000,7 @@ public class Lexico {
           // fall through
           case 66: break;
           case 27:
-            { Token token = new Token("CTE_HEX", yytext(), yycolumn, yyline);
+            { Token token = new Token("CTE_HEX", yytext(), yycolumn, yyline, "-", String.valueOf(Integer.parseInt(yytext().substring(2), 16)), yytext());
                 tokens.add(token);
                 ts.add(token);
 

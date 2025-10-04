@@ -188,7 +188,7 @@ public class Interfaz extends javax.swing.JFrame {
 
                 areaSalida.append(String.format("%s : %s\n", token.getToken(), token.getLexema()));
               
-                Object[] filaTabla = new Object[] { token.getToken(), token.getLexema(), token.getLinea(), token.getColumna()};
+                Object[] filaTabla = new Object[] { token.getToken(), token.getLexema(), token.getColumna(), token.getLinea()};
                 tabla.addRow(filaTabla);   
             }
             gestion.crearTablaSimbolos(lexico.getTs());

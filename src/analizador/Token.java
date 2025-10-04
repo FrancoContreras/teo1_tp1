@@ -3,21 +3,20 @@ package analizador;
 import java.util.Objects;
 
 public class Token {
-    private String token;
-    private String lexema;
+    private String token = "-";
+    private String lexema = "-";
     private int columna;
     private int linea;
     private String tipo = "-";
-    private String valor;
-    private String nombre;
-    private boolean ts;
+    private String valor = "-";
+    private String nombre = "-";
+    private String error = "-" ;
 
     public Token(String token, String lexema, int columna, int linea) {
         this.token = token;
         this.lexema = lexema;
         this.columna = columna;
         this.linea = linea;
-        this.ts = false;
     }
     
     public Token(String token, String lexema, int columna, int linea, String tipo, String valor, String nombre) {
@@ -28,7 +27,6 @@ public class Token {
         this.tipo = tipo;
         this.valor = valor;
         this.nombre = nombre;
-        this.ts = true;
     }
 
     public String getToken() { return token; }
@@ -45,7 +43,10 @@ public class Token {
     
     public String getNombre() { return nombre; }
     
-    public boolean getTs() { return ts;}
+    public String getError() { return error; }
+    
+    public void setError(String error) { this.error = error; }
+    
     
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -58,11 +59,4 @@ public class Token {
         return Objects.hash(valor);
     }
 
-    @Override
-    public String toString() {
-        return "Token{" +
-                "tokenTipo=" + token +
-                ", lexema='" + lexema + '\'' +
-                '}';
-    }
 }

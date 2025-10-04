@@ -4,7 +4,6 @@ import java.util.*;
 
 
 
-
 %%
 
 %public
@@ -19,23 +18,22 @@ import java.util.*;
     public ArrayList<Token> getTokens() { return tokens; }
     
     Set<Token> ts = new HashSet<Token>();
-    
     public Set<Token> getTs() { return ts; }
-/*
-    public boolean validarStr(Token) {
-        if (Token.getValor().length() <= 30) return true; 
+
+    public boolean validarStr(Token token) {
+        if (token.getValor().length() <= 30) return true; 
         else return false;
     }
 
-    public boolean validarInt(Token) {
+    public boolean validarInt(Token token) {
         //32768
-        if (Token.getValor() <= 32768) return true;
+        if (Integer.parseInt(token.getValor()) <= 32768) return true;
         else return false;
     }
-*/
+
 %}
 
-/* alfabetos */
+/* ALFABETOS */
 
     ALFABETICO = [a-zA-Z]
     DIGITO = [0-9]
@@ -45,7 +43,7 @@ import java.util.*;
     ARITMETICO = [-+*/]
     LOGICO = [<>=!]
 
-/* constantes */
+/* CONSTANTES */
 
     INT = {DIGITO}+
     FLT = {DIGITO}+("."){DIGITO}+
@@ -236,15 +234,16 @@ import java.util.*;
             }
 
 
+/* CONSTANTES */
     {STR}   {   
-                Token token = new Token("CTE_STR", yytext(), yycolumn, yyline, "-", yytext(), "_" + yytext());
+                Token token = new Token("CTE_STR", yytext(), yycolumn, yyline, "-", yytext().substring(1, yytext().length()-1), "_" + yytext().substring(1, yytext().length()-1));
                 tokens.add(token);
                 ts.add(token);
 
                 return token;
             }
     {HEX}   {   
-                Token token = new Token("CTE_HEX", yytext(), yycolumn, yyline);
+                Token token = new Token("CTE_HEX", yytext(), yycolumn, yyline, "-", String.valueOf(Integer.parseInt(yytext().substring(2), 16)), yytext());
                 tokens.add(token);
                 ts.add(token);
 

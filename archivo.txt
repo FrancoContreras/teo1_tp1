@@ -16,9 +16,10 @@ PROGRAM.SECTION
 	SHOW "hola mundo"
 	SHOW 99.99
 	SHOW var
+	SHOW 0hFF
 	
 	IF (ALLEQUAL([a+w,b],[(d-3)*2,e],[g,h])) 
-		THEN show "AllEqual es verdadero" 
+		THEN SHOW "AllEqual es verdadero" 
 	ENDIF  	
 ENDPROGRAM.SECTION
    
