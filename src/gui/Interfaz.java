@@ -19,8 +19,13 @@ import javax.swing.table.DefaultTableModel;
 import java.util.*;
 
 /**
- *
- * @author Mica
+ * Grupo 3:
+ *  - Romero Monteagudo, Micael 200834
+ *  - Contreras, Franco 176305
+ *  - Roldán, Tomas Nahuel 200924
+ *  - Sánchez, Eliseo 164514
+ * 
+ * 
  */
 public class Interfaz extends javax.swing.JFrame {
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Interfaz.class.getName());
