@@ -7,13 +7,13 @@ package gui;
 import analizador.Lexico;
 import analizador.Token;
 import analizador.gestionArchivo;
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.io.Reader;
+import java.io.StringReader;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.util.*;
@@ -37,10 +37,7 @@ public class Interfaz extends javax.swing.JFrame {
         this.setTitle("Analizador Léxico");
     }
     
-    public void salidaError(String error) {
-        areaSalida.append(error);
-    }
-
+  
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -170,36 +167,22 @@ public class Interfaz extends javax.swing.JFrame {
         DefaultTableModel tabla = (DefaultTableModel) tablaTL.getModel();
         tabla.setRowCount(0);
         areaSalida.setText(null);
-        File archivo = new File("archivo.txt");
-        PrintWriter escribir;
-        gestionArchivo gestion = new gestionArchivo();
         try {
-            escribir = new PrintWriter(archivo);
-            escribir.print(areaEntrada.getText());
-            escribir.close();
-        } catch (FileNotFoundException ex) {
-            System.getLogger(Interfaz.class.getName()).log(System.Logger.Level.ERROR, (String) null, ex);
-        }
-        
-        try {
-            Reader lector = new BufferedReader(new FileReader("archivo.txt"));
-            Lexico lexico = new Lexico(lector);
-            while (true) {
-                Object o = lexico.yylex();
+            Reader contenido = new StringReader(areaEntrada.getText());
+            Lexico lexico = new Lexico(contenido);
+            Object o = lexico.yylex();
+            while (o != null) {
                 if (o instanceof String) {
                     areaSalida.append((String)o);
                 }
                 else {
                     Token token = (Token)o;  
-                    if (token == null) {
-                        break;
-                    }
-
                     //areaSalida.append(String.format("%s : %s\n", token.getToken(), token.getLexema()));
 
                     Object[] filaTabla = new Object[] { token.getToken(), token.getLexema(), token.getColumna(), token.getLinea()};
                     tabla.addRow(filaTabla);
                 }
+                o = lexico.yylex();
             }
             gestion.crearTablaSimbolos(lexico.getTs());
         } catch (FileNotFoundException ex) {

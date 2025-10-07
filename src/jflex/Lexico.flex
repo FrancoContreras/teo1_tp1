@@ -9,7 +9,7 @@ import gui.Interfaz;
 
 %public
 %class Lexico
-%type Object
+%type Object // no devuelve dato primitivo
 %line
 %column
 
@@ -32,7 +32,7 @@ import gui.Interfaz;
         else return false;
     }
 
-    public boolean validarStr(float valor) {
+    public boolean validarFlt(float valor) {
         if (valor < Float.MAX_VALUE) return true;
         else return false;
     }
@@ -43,7 +43,7 @@ import gui.Interfaz;
 
     ALFABETICO = [a-zA-Z]
     DIGITO = [0-9]
-    ALFANUM = ({ALFABETICO}|{DIGITO})+
+    ALFANUM = ({ALFABETICO}|{DIGITO})+   
     ESPECIAL = [”#$°%&/\()¿?’{}[]:;_]
     ESPACIO = [ \t\r\n]
     ARITMETICO = [-+*/]
@@ -52,19 +52,21 @@ import gui.Interfaz;
 /* CONSTANTES */
 
     INT = {DIGITO}+
-    FLT = {DIGITO}+("."){DIGITO}+
+    FLT = {DIGITO}*("."){DIGITO}*
     STR = ("\"")({DIGITO}|{ALFABETICO}|{ESPECIAL}|{ARITMETICO}|{LOGICO}|{ESPACIO})*("\"")
     HEX = 0h({DIGITO}|A|B|C|D|E|F)+
 
 /*  */
 
     ID = {ALFABETICO}({DIGITO}|{ALFABETICO})*   
-    COMENTARIOS = ("$*")({ALFANUM}|{ESPACIO}|{ESPECIAL})*("*$")
+    COMENTARIOS = ("$*")({DIGITO}|{ALFABETICO}|{ESPECIAL}|{ARITMETICO}|{LOGICO}|{ESPACIO})*("*$")
 
 
 %%
 
 <YYINITIAL> {
+
+    
 
 /* OPERADORES */
     ":"     {
@@ -273,9 +275,9 @@ import gui.Interfaz;
                 }
             }
     {FLT}   {   
-                try {
+                try { // REVISAR
                     float valor = Float.parseFloat(yytext());
-                    if (!validarStr(valor)) {
+                    if (!validarFlt(valor)) {
                         String error = "ERROR : CTE_FLT Fuera de rango\n";
                         return error;   
                     }
@@ -317,11 +319,9 @@ import gui.Interfaz;
                 return token;
             }
     
-    {COMENTARIOS}   {/*Ignorar*/}
     {ESPACIO}+      {/*Ignorar*/}
+    {COMENTARIOS}   {/*Ignorar*/}
 }
 
-[^]     {
-            return new Token("ERROR", yytext(), yycolumn, yyline);
-        }
+[^]     { return new Token("ERROR", yytext(), yycolumn, yyline); }
 

@@ -10,7 +10,7 @@ public class Token {
     private String tipo = "-";
     private String valor = "-";
     private String nombre = "-";
-    private String error = "-" ;
+
 
     public Token(String token, String lexema, int columna, int linea) {
         this.token = token;
@@ -42,10 +42,6 @@ public class Token {
     public String getValor() { return valor; }
     
     public String getNombre() { return nombre; }
-    
-    public String getError() { return error; }
-    
-    public void setError(String error) { this.error = error; }
     
     
     public boolean equals(Object o) {

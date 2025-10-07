@@ -4,9 +4,10 @@ import java.io.*;
 import java.util.*;
 
 public class gestionArchivo {
-    FileInputStream entrada;
-    FileOutputStream salida;
-    File archivo;
+    private FileInputStream entrada;
+    private FileOutputStream salida;
+    private File archivo;
+    
     
     public String abrirArchivo(File archivo) {
         String contenido = "";
@@ -21,6 +22,8 @@ public class gestionArchivo {
         return contenido;
     }
     
+    
+   
     public void guardarArchivo(File archivo, String contenido) {
         try {
             salida = new FileOutputStream(archivo);
@@ -29,7 +32,7 @@ public class gestionArchivo {
         } catch (Exception e) {}
     }
     
-    
+        
     public void crearTablaSimbolos(Set<Token> HashSetDetokens){
         try {
             FileWriter archivo = new FileWriter("ts.txt");
