@@ -1,25 +1,52 @@
 $* declaracion de variables *$
 DECVAR
-	a1 : FLOAT
-	b2 : INT
-	p : INT
+                             a1 : FLOAT
+                             b2 : INT
+                             p : INT
+                             a : INT 
+                             w : INT
+                             b : INT 
+                             d : INT 
+                             e : INT 
+                             g : INT 
+                             h : INT 
 ENDDECVAR
 
 $* seccion de programa *$
 PROGRAM.SECTION
-	IF (b2 == p) 
-		THEN (p = 5)
-	ENDIF
+                             a1 = 45.0
+                             b2 = 10
+                             p = 10
+                             a = 12 
+                             w = 2 
+                             b = 5 
+                             d = 10 
+                             e = 5 
+                             g = 14 
+                             h = 5 
+
+                             IF (b2 == p) 
+                                  THEN (p = 5)
+                             ELSE p = b2 * 2
+                             ENDIF
 	
-	$*comentario*$
+                             $*comentario*$
 	
-	SHOW "hola mundo"
-	SHOW 99.99
-	SHOW var
-	SHOW 0hFF
-	
-	IF (ALLEQUAL([a+w,b],[(d-3)*2,e],[g,h])) 
-		THEN SHOW "AllEqual es verdadero" 
-	ENDIF  	
+                             SHOW "hola mundoaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+                             SHOW 99999999999999999999999999999999999999999999999.999999999999999999999999999999999999
+                             SHOW var
+                             SHOW 0hFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF
+                             SHOW 99999999999999999999999999999999999999999999999999999999999999999999999999999999999999
+
+                             SHOW "hola mundo" 
+                             SHOW 99.99
+                             SHOW var
+                             SHOW 0hFF
+                             SHOW 99
+  
+                             REPEAT 10
+                                 IF (ALLEQUAL([a+w,b],[(d-3)*2,e],[g,h])) 
+                                     THEN SHOW "AllEqual es verdadero" 
+                                 ENDIF  	
 ENDPROGRAM.SECTION
    
